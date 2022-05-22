@@ -19,6 +19,11 @@ class _HomePageState extends State<HomePage> {
   final HNController = TextEditingController();
   final MNController = TextEditingController();
   final ANController = TextEditingController();
+
+  final MNIPController = TextEditingController();
+  final ANIPController = TextEditingController();
+
+
   double _dureeTravail = 100;
   double _valuePrelevementSource = 0;
 
@@ -28,12 +33,33 @@ class _HomePageState extends State<HomePage> {
   void _changementStatut(int? value) {
     setState(() {
       _valueStatut = value ?? 0;
+      if(HBController.text.isNotEmpty){
+        double? HB = double.tryParse(HBController.text);
+        double? MB = double.tryParse(MBController.text);
+        double? AB = double.tryParse(ABController.text);
+
+        double  HN = calculNet(HB!, true, _valueStatut.toDouble());
+        double  MN = calculNet(MB!, true, _valueStatut.toDouble());
+        double AN = calculNet(AB!, true, _valueStatut.toDouble());
+
+        updateUI(-1,-1,-1,HN,MN,AN);
+
+
+      }
+
+
     });
   }
 
   void _changementPrime(int? value) {
     setState(() {
-      _valueStatut = value ?? 0;
+      _valuePrime = value ?? 0;
+      if (MBController.text.isNotEmpty) {
+        double? MB = double.tryParse(MBController.text);
+        double AB = MB! * _valuePrime;
+        double AN = calculNet(AB!, true, _valueStatut.toDouble());
+        updateUI(-1, -1, AB, -1, -1, AN);
+      }
     });
   }
 
@@ -81,8 +107,14 @@ class _HomePageState extends State<HomePage> {
                                 border: OutlineInputBorder(),
                                 labelText: 'Mensuel brut',
                               ),
-                              maxLines: 1,
-                            ),
+                              keyboardType: TextInputType.number,
+                              validator: (amount) => amount != null && double.tryParse(amount) == null
+                                  ? 'Saisir un nombre valide'
+                                  : null,
+                              onChanged: (text){
+                                onMBChange();
+                              },
+                            )
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -92,8 +124,14 @@ class _HomePageState extends State<HomePage> {
                                 border: OutlineInputBorder(),
                                 labelText: 'Annuel brut',
                               ),
-                              maxLines: 1,
-                            ),
+                              keyboardType: TextInputType.number,
+                              validator: (amount) => amount != null && double.tryParse(amount) == null
+                                  ? 'Saisir un nombre valide'
+                                  : null,
+                              onChanged: (text){
+                                onABChange();
+                              },
+                            )
                           ),
                         ],
                       ),
@@ -110,8 +148,14 @@ class _HomePageState extends State<HomePage> {
                               border: OutlineInputBorder(),
                               labelText: 'Horaire net',
                             ),
-                            maxLines: 1,
-                          ),
+                            keyboardType: TextInputType.number,
+                            validator: (amount) => amount != null && double.tryParse(amount) == null
+                                ? 'Saisir un nombre valide'
+                                : null,
+                            onChanged: (text){
+                              onHNChange();
+                            },
+                          )
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -121,8 +165,14 @@ class _HomePageState extends State<HomePage> {
                               border: OutlineInputBorder(),
                               labelText: 'Mensuel net',
                             ),
-                            maxLines: 1,
-                          ),
+                            keyboardType: TextInputType.number,
+                            validator: (amount) => amount != null && double.tryParse(amount) == null
+                                ? 'Saisir un nombre valide'
+                                : null,
+                            onChanged: (text){
+                              onMNChange();
+                            },
+                          )
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -132,14 +182,34 @@ class _HomePageState extends State<HomePage> {
                               border: OutlineInputBorder(),
                               labelText: 'Annuel net',
                             ),
-                            maxLines: 1,
-                          ),
+                            keyboardType: TextInputType.number,
+                            validator: (amount) => amount != null && double.tryParse(amount) == null
+                                ? 'Saisir un nombre valide'
+                                : null,
+                            onChanged: (text){
+                              onANChange();
+                            },
+                          )
                         ),
                       ],
                     ),
                   ),
                 ],
               ),
+
+              Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Statut : ',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                ],
+              ),
+
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -219,11 +289,24 @@ class _HomePageState extends State<HomePage> {
 
 
 
+              Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Nombre de mois de prime conventionnelle : ',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                ],
+              ),
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+
                     Radio(
                       value: 12,
                       groupValue: _valuePrime,
@@ -297,11 +380,25 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
+              Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Temps de travail : ',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                ],
+              ),
+
+
+
 
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SfSlider(
-                  min: 0.0,
+                  min: 10.0,
                   max: 100.0,
                   stepSize: 10,
                   value: _dureeTravail,
@@ -313,9 +410,37 @@ class _HomePageState extends State<HomePage> {
                   onChanged: (dynamic value) {
                     setState(() {
                       _dureeTravail = value;
+
+
+                      if(HBController.text.isNotEmpty) {
+                        double? HB = double.tryParse(HBController.text);
+
+                        double MB = HB! * 152 * (_dureeTravail / 100);
+                        double MN =
+                            calculNet(MB!, true, _valueStatut.toDouble());
+
+                        double AB = MB! * _valuePrime;
+                        double AN =
+                            calculNet(AB!, true, _valueStatut.toDouble());
+
+                        updateUI(-1, MB, AB, -1, MN, AN);
+                      }
                     });
                   },
                 ),
+              ),
+
+
+              Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Taux de prélevement a la source : ',
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -343,31 +468,71 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
-                          controller: nameController,
+                          controller: MNIPController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Mensuel net après impôts',
                           ),
-                          maxLines: 1,
-                        ),
+                          keyboardType: TextInputType.number,
+                          validator: (amount) => amount != null && double.tryParse(amount) == null
+                              ? 'Saisir un nombre valide'
+                              : null,
+                          onChanged: (text){
+                            onMNIPChange();
+                          },
+                        )
                       ),
                     ),
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
-                          controller: nameController,
+                          controller: ANIPController,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Annuel net après impôts',
                           ),
-                          maxLines: 1,
-                        ),
+                          keyboardType: TextInputType.number,
+                          validator: (amount) => amount != null && double.tryParse(amount) == null
+                              ? 'Saisir un nombre valide'
+                              : null,
+                          onChanged: (text){
+                            onANIPChange();
+                          },
+                        )
                       ),
                     ),
                   ],
                 ),
               ),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: OutlinedButton(
+                          onPressed: () {
+
+                            HBController.clear();
+                            MBController.clear();
+                            ABController.clear();
+                            HNController.clear();
+                            MNController.clear();
+                            ANController.clear();
+                            MNIPController.clear();
+                            ANIPController.clear();
+
+                          },
+                          child: Text('Réinitialiser'),
+                        )
+                    ),
+                  ),
+                ],
+              ),
+
+
+
             ],
           ),
        ] ),
@@ -383,28 +548,27 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       double? HB = double.tryParse(HBController.text);
 
-      double  HN = calculSalaire(HB!, true, _valueStatut.toDouble(), _dureeTravail);
+      double  HN = calculNet(HB!, true, _valueStatut.toDouble());
 
-       double MB = HB!*152;
-       double AB = HB!*2128;
+      double MB = HB!* 152 * (_dureeTravail/100);
+      double  MN = calculNet(MB!, true, _valueStatut.toDouble());
 
-      MBController.text = MB.toString();
-      ABController.text = AB.toString();
-      HNController.text = HN.toString();
+      double AB = MB!*_valuePrime;
+      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+
+      updateUI(-1,MB,AB,HN,MN,AN);
 
     });
   }
 
 
-  double calculSalaire(double salaire, bool isHoraire, double statut, double duree){
+  double calculNet(double salaire, bool isBrut, double statut){
 
-    // if(!isBrut) {
-    //   statut += 1;
-    // }
+    if(!isBrut) {
+      return  roundDouble(salaire / (1-statut/100), 2);
+    }
 
-
-    double res =  roundDouble(salaire * (1-statut/100), 2);
-    return roundDouble(res * (duree/100), 2);
+    return  roundDouble(salaire * (1-statut/100), 2);
 
   }
 
@@ -419,5 +583,112 @@ class _HomePageState extends State<HomePage> {
     return ((value * mod).round().toDouble() / mod);
   }
 
+  void updateUI(double hb, double mb, double ab, double hn, double mn, double an) {
+    if(!hb.isNegative) {
+      hb = roundDouble(hb,2);
+      HBController.text = hb.toString();
+    }
+    if(!mb.isNegative) {
+      mb = roundDouble(mb,2);
+      MBController.text = mb.toString();
+    }
+    if(!ab.isNegative) {
+      ab = roundDouble(ab,2);
+      ABController.text = ab.toString();
+    }
+    if(!hn.isNegative) {
+      hn = roundDouble(hn,2);
+      HNController.text = hn.toString();
+    }
+    if(!mn.isNegative) {
+      mn = roundDouble(mn,2);
+      MNController.text = mn.toString();
+    }
+    if(!an.isNegative) {
+      an = roundDouble(an,2);
+      ANController.text = an.toString();
+    }
+  }
+
+  void onMBChange() {
+    setState(() {
+      double? MB = double.tryParse(MBController.text);
+
+      double HB = MB!/ 152 * (_dureeTravail/100);
+
+      double  HN = calculNet(HB!, true, _valueStatut.toDouble());
+      double  MN = calculNet(MB!, true, _valueStatut.toDouble());
+
+      double AB = MB!*_valuePrime;
+      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+
+      updateUI(HB,-1,AB,HN,MN,AN);
+
+    });
+  }
+  void onABChange() {
+    setState(() {
+      double? AB = double.tryParse(ABController.text);
+
+      double MB = AB!/_valuePrime;
+      double HB = MB!/ 152 * (_dureeTravail/100);
+
+      double  HN = calculNet(HB!, true, _valueStatut.toDouble());
+      double  MN = calculNet(MB!, true, _valueStatut.toDouble());
+      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+
+      updateUI(HB,MB,-1,HN,MN,AN);
+
+    });
+  }
+  void onHNChange() {
+    setState(() {
+      double? HN = double.tryParse(HNController.text);
+      double  HB = calculNet(HN!, false, _valueStatut.toDouble());
+
+      double MB = HB!* 152 * (_dureeTravail/100);
+      double AB = MB!*_valuePrime;
+
+      double  MN = calculNet(MB!, true, _valueStatut.toDouble());
+      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+
+      updateUI(HB,MB,AB,-1,MN,AN);
+
+    });
+  }
+  void onMNChange() {
+    setState(() {
+      double? MN = double.tryParse(MNController.text);
+      double  MB = calculNet(MN!, false, _valueStatut.toDouble());
+
+      double HB = MB!/ 152 * (_dureeTravail/100);
+      double AB = MB!*_valuePrime;
+
+      double  HN = calculNet(HB!, true, _valueStatut.toDouble());
+      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+
+      updateUI(HB,MB,AB,HN,-1,AN);
+
+    });
+  }
+  void onANChange() {
+    setState(() {
+      double? AN = double.tryParse(ANController.text);
+
+      double MN = AN!/_valuePrime;
+      double HN = MN!/ 152 * (_dureeTravail/100);
+
+      double  HB = calculNet(HN!, false, _valueStatut.toDouble());
+      double  MB = calculNet(MN!, false, _valueStatut.toDouble());
+      double AB = calculNet(AN!, false, _valueStatut.toDouble());
+
+      updateUI(HB,MB,AB,HN,MN,-1);
+
+    });
+  }
+  void onANIPChange() {}
+  void onMNIPChange() {}
+
 }
 //HORAIRE NET = HORAIRE BRUT -statut% (22 pour non cadre)
+//button reset

@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
         double  MN = calculNet(MB!, true, _valueStatut.toDouble());
         double AN = calculNet(AB!, true, _valueStatut.toDouble());
 
-        updateUI(-1,-1,-1,HN,MN,AN);
+        updateUI(-1,-1,-1,HN,MN,AN, -1, -1);
 
 
       }
@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
         double? MB = double.tryParse(MBController.text);
         double AB = MB! * _valuePrime;
         double AN = calculNet(AB!, true, _valueStatut.toDouble());
-        updateUI(-1, -1, AB, -1, -1, AN);
+        updateUI(-1, -1, AB, -1, -1, AN, -1, -1);
       }
     });
   }
@@ -423,7 +423,7 @@ class _HomePageState extends State<HomePage> {
                         double AN =
                             calculNet(AB!, true, _valueStatut.toDouble());
 
-                        updateUI(-1, MB, AB, -1, MN, AN);
+                        updateUI(-1, MB, AB, -1, MN, AN, -1, -1);
                       }
                     });
                   },
@@ -456,6 +456,17 @@ class _HomePageState extends State<HomePage> {
                   onChanged: (dynamic value) {
                     setState(() {
                       _valuePrelevementSource = value;
+                      if(MNController.text.isNotEmpty){
+
+                        double? MN = double.tryParse(MNController.text);
+                        double MNIP = MN!*(1-_valuePrelevementSource/100);
+                        double? AN = double.tryParse(ANController.text);
+                        double ANIP = AN!*(1-_valuePrelevementSource/100);
+                        updateUI(-1, -1, -1, -1, -1, -1, MNIP, ANIP);
+
+                      }
+
+
                     });
                   },
                 ),
@@ -556,7 +567,7 @@ class _HomePageState extends State<HomePage> {
       double AB = MB!*_valuePrime;
       double AN = calculNet(AB!, true, _valueStatut.toDouble());
 
-      updateUI(-1,MB,AB,HN,MN,AN);
+      updateUI(-1,MB,AB,HN,MN,AN, -1, -1);
 
     });
   }
@@ -583,7 +594,7 @@ class _HomePageState extends State<HomePage> {
     return ((value * mod).round().toDouble() / mod);
   }
 
-  void updateUI(double hb, double mb, double ab, double hn, double mn, double an) {
+  void updateUI(double hb, double mb, double ab, double hn, double mn, double an, double mnip, double anip) {
     if(!hb.isNegative) {
       hb = roundDouble(hb,2);
       HBController.text = hb.toString();
@@ -608,6 +619,14 @@ class _HomePageState extends State<HomePage> {
       an = roundDouble(an,2);
       ANController.text = an.toString();
     }
+    if(!anip.isNegative) {
+      anip = roundDouble(an,2);
+      ANIPController.text = anip.toString();
+    }
+    if(!mnip.isNegative) {
+      mnip = roundDouble(mnip,2);
+      MNIPController.text = mnip.toString();
+    }
   }
 
   void onMBChange() {
@@ -622,7 +641,7 @@ class _HomePageState extends State<HomePage> {
       double AB = MB!*_valuePrime;
       double AN = calculNet(AB!, true, _valueStatut.toDouble());
 
-      updateUI(HB,-1,AB,HN,MN,AN);
+      updateUI(HB,-1,AB,HN,MN,AN, -1, -1);
 
     });
   }
@@ -637,7 +656,7 @@ class _HomePageState extends State<HomePage> {
       double  MN = calculNet(MB!, true, _valueStatut.toDouble());
       double AN = calculNet(AB!, true, _valueStatut.toDouble());
 
-      updateUI(HB,MB,-1,HN,MN,AN);
+      updateUI(HB,MB,-1,HN,MN,AN, -1, -1);
 
     });
   }
@@ -652,7 +671,7 @@ class _HomePageState extends State<HomePage> {
       double  MN = calculNet(MB!, true, _valueStatut.toDouble());
       double AN = calculNet(AB!, true, _valueStatut.toDouble());
 
-      updateUI(HB,MB,AB,-1,MN,AN);
+      updateUI(HB,MB,AB,-1,MN,AN, -1, -1);
 
     });
   }
@@ -667,7 +686,7 @@ class _HomePageState extends State<HomePage> {
       double  HN = calculNet(HB!, true, _valueStatut.toDouble());
       double AN = calculNet(AB!, true, _valueStatut.toDouble());
 
-      updateUI(HB,MB,AB,HN,-1,AN);
+      updateUI(HB,MB,AB,HN,-1,AN, -1, -1);
 
     });
   }
@@ -682,7 +701,7 @@ class _HomePageState extends State<HomePage> {
       double  MB = calculNet(MN!, false, _valueStatut.toDouble());
       double AB = calculNet(AN!, false, _valueStatut.toDouble());
 
-      updateUI(HB,MB,AB,HN,MN,-1);
+      updateUI(HB,MB,AB,HN,MN,-1, -1, -1);
 
     });
   }

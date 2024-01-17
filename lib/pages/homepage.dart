@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
       if (MBController.text.isNotEmpty) {
         double? MB = double.tryParse(MBController.text);
         double AB = MB! * _valuePrime;
-        double AN = calculNet(AB!, true, _valueStatut.toDouble());
+        double AN = calculNet(AB, true, _valueStatut.toDouble());
         updateUI(-1, -1, AB, -1, -1, AN, -1, -1);
       }
     });
@@ -417,11 +417,11 @@ class _HomePageState extends State<HomePage> {
 
                         double MB = HB! * 152 * (_dureeTravail / 100);
                         double MN =
-                            calculNet(MB!, true, _valueStatut.toDouble());
+                            calculNet(MB, true, _valueStatut.toDouble());
 
-                        double AB = MB! * _valuePrime;
+                        double AB = MB * _valuePrime;
                         double AN =
-                            calculNet(AB!, true, _valueStatut.toDouble());
+                            calculNet(AB, true, _valueStatut.toDouble());
 
                         updateUI(-1, MB, AB, -1, MN, AN, -1, -1);
                       }
@@ -561,11 +561,11 @@ class _HomePageState extends State<HomePage> {
 
       double  HN = calculNet(HB!, true, _valueStatut.toDouble());
 
-      double MB = HB!* 152 * (_dureeTravail/100);
-      double  MN = calculNet(MB!, true, _valueStatut.toDouble());
+      double MB = HB* 152 * (_dureeTravail/100);
+      double  MN = calculNet(MB, true, _valueStatut.toDouble());
 
-      double AB = MB!*_valuePrime;
-      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+      double AB = MB*_valuePrime;
+      double AN = calculNet(AB, true, _valueStatut.toDouble());
 
       updateUI(-1,MB,AB,HN,MN,AN, -1, -1);
 
@@ -635,11 +635,11 @@ class _HomePageState extends State<HomePage> {
 
       double HB = MB!/ 152 * (_dureeTravail/100);
 
-      double  HN = calculNet(HB!, true, _valueStatut.toDouble());
-      double  MN = calculNet(MB!, true, _valueStatut.toDouble());
+      double  HN = calculNet(HB, true, _valueStatut.toDouble());
+      double  MN = calculNet(MB, true, _valueStatut.toDouble());
 
-      double AB = MB!*_valuePrime;
-      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+      double AB = MB*_valuePrime;
+      double AN = calculNet(AB, true, _valueStatut.toDouble());
 
       updateUI(HB,-1,AB,HN,MN,AN, -1, -1);
 
@@ -650,11 +650,11 @@ class _HomePageState extends State<HomePage> {
       double? AB = double.tryParse(ABController.text);
 
       double MB = AB!/_valuePrime;
-      double HB = MB!/ 152 * (_dureeTravail/100);
+      double HB = MB/ 152 * (_dureeTravail/100);
 
-      double  HN = calculNet(HB!, true, _valueStatut.toDouble());
-      double  MN = calculNet(MB!, true, _valueStatut.toDouble());
-      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+      double  HN = calculNet(HB, true, _valueStatut.toDouble());
+      double  MN = calculNet(MB, true, _valueStatut.toDouble());
+      double AN = calculNet(AB, true, _valueStatut.toDouble());
 
       updateUI(HB,MB,-1,HN,MN,AN, -1, -1);
 
@@ -665,11 +665,11 @@ class _HomePageState extends State<HomePage> {
       double? HN = double.tryParse(HNController.text);
       double  HB = calculNet(HN!, false, _valueStatut.toDouble());
 
-      double MB = HB!* 152 * (_dureeTravail/100);
-      double AB = MB!*_valuePrime;
+      double MB = HB* 152 * (_dureeTravail/100);
+      double AB = MB*_valuePrime;
 
-      double  MN = calculNet(MB!, true, _valueStatut.toDouble());
-      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+      double  MN = calculNet(MB, true, _valueStatut.toDouble());
+      double AN = calculNet(AB, true, _valueStatut.toDouble());
 
       updateUI(HB,MB,AB,-1,MN,AN, -1, -1);
 
@@ -680,11 +680,11 @@ class _HomePageState extends State<HomePage> {
       double? MN = double.tryParse(MNController.text);
       double  MB = calculNet(MN!, false, _valueStatut.toDouble());
 
-      double HB = MB!/ 152 * (_dureeTravail/100);
-      double AB = MB!*_valuePrime;
+      double HB = MB/ 152 * (_dureeTravail/100);
+      double AB = MB*_valuePrime;
 
-      double  HN = calculNet(HB!, true, _valueStatut.toDouble());
-      double AN = calculNet(AB!, true, _valueStatut.toDouble());
+      double  HN = calculNet(HB, true, _valueStatut.toDouble());
+      double AN = calculNet(AB, true, _valueStatut.toDouble());
 
       updateUI(HB,MB,AB,HN,-1,AN, -1, -1);
 
@@ -695,11 +695,11 @@ class _HomePageState extends State<HomePage> {
       double? AN = double.tryParse(ANController.text);
 
       double MN = AN!/_valuePrime;
-      double HN = MN!/ 152 * (_dureeTravail/100);
+      double HN = MN/ 152 * (_dureeTravail/100);
 
-      double  HB = calculNet(HN!, false, _valueStatut.toDouble());
-      double  MB = calculNet(MN!, false, _valueStatut.toDouble());
-      double AB = calculNet(AN!, false, _valueStatut.toDouble());
+      double  HB = calculNet(HN, false, _valueStatut.toDouble());
+      double  MB = calculNet(MN, false, _valueStatut.toDouble());
+      double AB = calculNet(AN, false, _valueStatut.toDouble());
 
       updateUI(HB,MB,AB,HN,MN,-1, -1, -1);
 

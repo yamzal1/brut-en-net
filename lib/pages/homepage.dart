@@ -12,52 +12,48 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final nameController = TextEditingController();
-  final HBController = TextEditingController();
-  final MBController = TextEditingController();
-  final ABController = TextEditingController();
+  final horaireBrut = TextEditingController();
+  final mensuelBrut = TextEditingController();
+  final annuelBrut = TextEditingController();
 
-  final HNController = TextEditingController();
-  final MNController = TextEditingController();
-  final ANController = TextEditingController();
+  final horaireNet = TextEditingController();
+  final mensuelNet = TextEditingController();
+  final annuelNet = TextEditingController();
 
-  final MNIPController = TextEditingController();
-  final ANIPController = TextEditingController();
+  final mensuelNetApresImpots = TextEditingController();
+  final annuelNetApresImpots = TextEditingController();
 
 
-  double _dureeTravail = 100;
-  double _valuePrelevementSource = 0;
+  double tempsTravail = 100;
+  double tauxPrelevementSource = 0;
 
-  int _valueStatut = 22;
-  int _valuePrime = 12;
+  int cotisationsStatut = 22;
+  int moisPrimeConventionnelle = 12;
 
-  void _changementStatut(int? value) {
+  void changementStatut(int? value) {
     setState(() {
-      _valueStatut = value ?? 0;
-      if(HBController.text.isNotEmpty){
-        double? HB = double.tryParse(HBController.text);
-        double? MB = double.tryParse(MBController.text);
-        double? AB = double.tryParse(ABController.text);
+      cotisationsStatut = value ?? 0;
+      if(horaireBrut.text.isNotEmpty){
+        double? HB = double.tryParse(horaireBrut.text);
+        double? MB = double.tryParse(mensuelBrut.text);
+        double? AB = double.tryParse(annuelBrut.text);
 
-        double  HN = calculNet(HB!, true, _valueStatut.toDouble());
-        double  MN = calculNet(MB!, true, _valueStatut.toDouble());
-        double AN = calculNet(AB!, true, _valueStatut.toDouble());
+        double  HN = calculNet(HB!, true, cotisationsStatut.toDouble());
+        double  MN = calculNet(MB!, true, cotisationsStatut.toDouble());
+        double AN = calculNet(AB!, true, cotisationsStatut.toDouble());
 
         updateUI(-1,-1,-1,HN,MN,AN, -1, -1);
-
-
       }
-
-
     });
   }
 
-  void _changementPrime(int? value) {
+  void changementPrime(int? value) {
     setState(() {
-      _valuePrime = value ?? 0;
-      if (MBController.text.isNotEmpty) {
-        double? MB = double.tryParse(MBController.text);
-        double AB = MB! * _valuePrime;
-        double AN = calculNet(AB, true, _valueStatut.toDouble());
+      moisPrimeConventionnelle = value ?? 0;
+      if (mensuelBrut.text.isNotEmpty) {
+        double? MB = double.tryParse(mensuelBrut.text);
+        double AB = MB! * moisPrimeConventionnelle;
+        double AN = calculNet(AB, true, cotisationsStatut.toDouble());
         updateUI(-1, -1, AB, -1, -1, AN, -1, -1);
       }
     });
@@ -85,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
-                              controller: HBController,
+                              controller: horaireBrut,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Horaire brut',
@@ -102,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
-                              controller: MBController,
+                              controller: mensuelBrut,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Mensuel brut',
@@ -119,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
-                              controller: ABController,
+                              controller: annuelBrut,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Annuel brut',
@@ -143,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            controller: HNController,
+                            controller: horaireNet,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Horaire net',
@@ -160,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            controller: MNController,
+                            controller: mensuelNet,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Mensuel net',
@@ -177,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            controller: ANController,
+                            controller: annuelNet,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Annuel net',
@@ -209,7 +205,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
 
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -217,8 +212,8 @@ class _HomePageState extends State<HomePage> {
                   children: <Widget>[
                     Radio(
                       value: 22,
-                      groupValue: _valueStatut,
-                      onChanged: _changementStatut,
+                      groupValue: cotisationsStatut,
+                      onChanged: changementStatut,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -229,8 +224,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Radio(
                       value: 25,
-                      groupValue: _valueStatut,
-                      onChanged: _changementStatut,
+                      groupValue: cotisationsStatut,
+                      onChanged: changementStatut,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -243,8 +238,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Radio(
                       value: 15,
-                      groupValue: _valueStatut,
-                      onChanged: _changementStatut,
+                      groupValue: cotisationsStatut,
+                      onChanged: changementStatut,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -257,8 +252,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Radio(
                       value: 45,
-                      groupValue: _valueStatut,
-                      onChanged: _changementStatut,
+                      groupValue: cotisationsStatut,
+                      onChanged: changementStatut,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -271,8 +266,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Radio(
                       value: 51,
-                      groupValue: _valueStatut,
-                      onChanged: _changementStatut,
+                      groupValue: cotisationsStatut,
+                      onChanged: changementStatut,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -286,8 +281,6 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-
-
 
               Row(
                 children: [
@@ -309,8 +302,8 @@ class _HomePageState extends State<HomePage> {
 
                     Radio(
                       value: 12,
-                      groupValue: _valuePrime,
-                      onChanged: _changementPrime,
+                      groupValue: moisPrimeConventionnelle,
+                      onChanged: changementPrime,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -321,8 +314,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Radio(
                       value: 13,
-                      groupValue: _valuePrime,
-                      onChanged: _changementPrime,
+                      groupValue: moisPrimeConventionnelle,
+                      onChanged: changementPrime,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -335,8 +328,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Radio(
                       value: 14,
-                      groupValue: _valuePrime,
-                      onChanged: _changementPrime,
+                      groupValue: moisPrimeConventionnelle,
+                      onChanged: changementPrime,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -349,8 +342,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Radio(
                       value: 15,
-                      groupValue: _valuePrime,
-                      onChanged: _changementPrime,
+                      groupValue: moisPrimeConventionnelle,
+                      onChanged: changementPrime,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -363,8 +356,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Radio(
                       value: 16,
-                      groupValue: _valuePrime,
-                      onChanged: _changementPrime,
+                      groupValue: moisPrimeConventionnelle,
+                      onChanged: changementPrime,
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -393,15 +386,13 @@ class _HomePageState extends State<HomePage> {
               ),
 
 
-
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SfSlider(
                   min: 10.0,
                   max: 100.0,
                   stepSize: 10,
-                  value: _dureeTravail,
+                  value: tempsTravail,
                   interval: 10,
                   showTicks: true,
                   showLabels: true,
@@ -409,19 +400,19 @@ class _HomePageState extends State<HomePage> {
                   minorTicksPerInterval: 0,
                   onChanged: (dynamic value) {
                     setState(() {
-                      _dureeTravail = value;
+                      tempsTravail = value;
 
 
-                      if(HBController.text.isNotEmpty) {
-                        double? HB = double.tryParse(HBController.text);
+                      if(horaireBrut.text.isNotEmpty) {
+                        double? HB = double.tryParse(horaireBrut.text);
 
-                        double MB = HB! * 152 * (_dureeTravail / 100);
+                        double MB = HB! * 152 * (tempsTravail / 100);
                         double MN =
-                            calculNet(MB, true, _valueStatut.toDouble());
+                            calculNet(MB, true, cotisationsStatut.toDouble());
 
-                        double AB = MB * _valuePrime;
+                        double AB = MB * moisPrimeConventionnelle;
                         double AN =
-                            calculNet(AB, true, _valueStatut.toDouble());
+                            calculNet(AB, true, cotisationsStatut.toDouble());
 
                         updateUI(-1, MB, AB, -1, MN, AN, -1, -1);
                       }
@@ -448,20 +439,20 @@ class _HomePageState extends State<HomePage> {
                   min: 0.0,
                   max: 43.0,
                   stepSize: 0.5,
-                  value: _valuePrelevementSource,
+                  value: tauxPrelevementSource,
                   showTicks: false,
                   showLabels: true,
                   enableTooltip: true,
                   minorTicksPerInterval: 0,
                   onChanged: (dynamic value) {
                     setState(() {
-                      _valuePrelevementSource = value;
-                      if(MNController.text.isNotEmpty){
+                      tauxPrelevementSource = value;
+                      if(mensuelNet.text.isNotEmpty){
 
-                        double? MN = double.tryParse(MNController.text);
-                        double MNIP = MN!*(1-_valuePrelevementSource/100);
-                        double? AN = double.tryParse(ANController.text);
-                        double ANIP = AN!*(1-_valuePrelevementSource/100);
+                        double? MN = double.tryParse(mensuelNet.text);
+                        double MNIP = MN!*(1-tauxPrelevementSource/100);
+                        double? AN = double.tryParse(annuelNet.text);
+                        double ANIP = AN!*(1-tauxPrelevementSource/100);
                         updateUI(-1, -1, -1, -1, -1, -1, MNIP, ANIP);
 
                       }
@@ -479,7 +470,7 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
-                          controller: MNIPController,
+                          controller: mensuelNetApresImpots,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Mensuel net après impôts',
@@ -498,7 +489,7 @@ class _HomePageState extends State<HomePage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
-                          controller: ANIPController,
+                          controller: annuelNetApresImpots,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Annuel net après impôts',
@@ -525,14 +516,14 @@ class _HomePageState extends State<HomePage> {
                         child: OutlinedButton(
                           onPressed: () {
 
-                            HBController.clear();
-                            MBController.clear();
-                            ABController.clear();
-                            HNController.clear();
-                            MNController.clear();
-                            ANController.clear();
-                            MNIPController.clear();
-                            ANIPController.clear();
+                            horaireBrut.clear();
+                            mensuelBrut.clear();
+                            annuelBrut.clear();
+                            horaireNet.clear();
+                            mensuelNet.clear();
+                            annuelNet.clear();
+                            mensuelNetApresImpots.clear();
+                            annuelNetApresImpots.clear();
 
                           },
                           child: Text('Réinitialiser'),
@@ -542,8 +533,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
 
-
-
             ],
           ),
        ] ),
@@ -551,21 +540,14 @@ class _HomePageState extends State<HomePage> {
 
 
 
-
-
-
-
   void onHBChange() {
     setState(() {
-      double? HB = double.tryParse(HBController.text);
-
-      double  HN = calculNet(HB!, true, _valueStatut.toDouble());
-
-      double MB = HB* 152 * (_dureeTravail/100);
-      double  MN = calculNet(MB, true, _valueStatut.toDouble());
-
-      double AB = MB*_valuePrime;
-      double AN = calculNet(AB, true, _valueStatut.toDouble());
+      double? HB = double.tryParse(horaireBrut.text);
+      double  HN = calculNet(HB!, true, cotisationsStatut.toDouble());
+      double MB = HB* 152 * (tempsTravail/100);
+      double  MN = calculNet(MB, true, cotisationsStatut.toDouble());
+      double AB = MB*moisPrimeConventionnelle;
+      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
 
       updateUI(-1,MB,AB,HN,MN,AN, -1, -1);
 
@@ -574,7 +556,6 @@ class _HomePageState extends State<HomePage> {
 
 
   double calculNet(double salaire, bool isBrut, double statut){
-
     if(!isBrut) {
       return  roundDouble(salaire / (1-statut/100), 2);
     }
@@ -582,12 +563,6 @@ class _HomePageState extends State<HomePage> {
     return  roundDouble(salaire * (1-statut/100), 2);
 
   }
-
-  // double calculSalairePrelevement(){
-  //
-  //   return 0;
-  // }
-
 
   double roundDouble(double value, int places){
     num mod = pow(10.0, places);
@@ -597,49 +572,49 @@ class _HomePageState extends State<HomePage> {
   void updateUI(double hb, double mb, double ab, double hn, double mn, double an, double mnip, double anip) {
     if(!hb.isNegative) {
       hb = roundDouble(hb,2);
-      HBController.text = hb.toString();
+      horaireBrut.text = hb.toString();
     }
     if(!mb.isNegative) {
       mb = roundDouble(mb,2);
-      MBController.text = mb.toString();
+      mensuelBrut.text = mb.toString();
     }
     if(!ab.isNegative) {
       ab = roundDouble(ab,2);
-      ABController.text = ab.toString();
+      annuelBrut.text = ab.toString();
     }
     if(!hn.isNegative) {
       hn = roundDouble(hn,2);
-      HNController.text = hn.toString();
+      horaireNet.text = hn.toString();
     }
     if(!mn.isNegative) {
       mn = roundDouble(mn,2);
-      MNController.text = mn.toString();
+      mensuelNet.text = mn.toString();
     }
     if(!an.isNegative) {
       an = roundDouble(an,2);
-      ANController.text = an.toString();
+      annuelNet.text = an.toString();
     }
     if(!anip.isNegative) {
       anip = roundDouble(an,2);
-      ANIPController.text = anip.toString();
+      annuelNetApresImpots.text = anip.toString();
     }
     if(!mnip.isNegative) {
       mnip = roundDouble(mnip,2);
-      MNIPController.text = mnip.toString();
+      mensuelNetApresImpots.text = mnip.toString();
     }
   }
 
   void onMBChange() {
     setState(() {
-      double? MB = double.tryParse(MBController.text);
+      double? MB = double.tryParse(mensuelBrut.text);
 
-      double HB = MB!/ 152 * (_dureeTravail/100);
+      double HB = MB!/ 152 * (tempsTravail/100);
 
-      double  HN = calculNet(HB, true, _valueStatut.toDouble());
-      double  MN = calculNet(MB, true, _valueStatut.toDouble());
+      double  HN = calculNet(HB, true, cotisationsStatut.toDouble());
+      double  MN = calculNet(MB, true, cotisationsStatut.toDouble());
 
-      double AB = MB*_valuePrime;
-      double AN = calculNet(AB, true, _valueStatut.toDouble());
+      double AB = MB*moisPrimeConventionnelle;
+      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
 
       updateUI(HB,-1,AB,HN,MN,AN, -1, -1);
 
@@ -647,14 +622,14 @@ class _HomePageState extends State<HomePage> {
   }
   void onABChange() {
     setState(() {
-      double? AB = double.tryParse(ABController.text);
+      double? AB = double.tryParse(annuelBrut.text);
 
-      double MB = AB!/_valuePrime;
-      double HB = MB/ 152 * (_dureeTravail/100);
+      double MB = AB!/moisPrimeConventionnelle;
+      double HB = MB/ 152 * (tempsTravail/100);
 
-      double  HN = calculNet(HB, true, _valueStatut.toDouble());
-      double  MN = calculNet(MB, true, _valueStatut.toDouble());
-      double AN = calculNet(AB, true, _valueStatut.toDouble());
+      double  HN = calculNet(HB, true, cotisationsStatut.toDouble());
+      double  MN = calculNet(MB, true, cotisationsStatut.toDouble());
+      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
 
       updateUI(HB,MB,-1,HN,MN,AN, -1, -1);
 
@@ -662,14 +637,14 @@ class _HomePageState extends State<HomePage> {
   }
   void onHNChange() {
     setState(() {
-      double? HN = double.tryParse(HNController.text);
-      double  HB = calculNet(HN!, false, _valueStatut.toDouble());
+      double? HN = double.tryParse(horaireNet.text);
+      double  HB = calculNet(HN!, false, cotisationsStatut.toDouble());
 
-      double MB = HB* 152 * (_dureeTravail/100);
-      double AB = MB*_valuePrime;
+      double MB = HB* 152 * (tempsTravail/100);
+      double AB = MB*moisPrimeConventionnelle;
 
-      double  MN = calculNet(MB, true, _valueStatut.toDouble());
-      double AN = calculNet(AB, true, _valueStatut.toDouble());
+      double  MN = calculNet(MB, true, cotisationsStatut.toDouble());
+      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
 
       updateUI(HB,MB,AB,-1,MN,AN, -1, -1);
 
@@ -677,14 +652,14 @@ class _HomePageState extends State<HomePage> {
   }
   void onMNChange() {
     setState(() {
-      double? MN = double.tryParse(MNController.text);
-      double  MB = calculNet(MN!, false, _valueStatut.toDouble());
+      double? MN = double.tryParse(mensuelNet.text);
+      double  MB = calculNet(MN!, false, cotisationsStatut.toDouble());
 
-      double HB = MB/ 152 * (_dureeTravail/100);
-      double AB = MB*_valuePrime;
+      double HB = MB/ 152 * (tempsTravail/100);
+      double AB = MB*moisPrimeConventionnelle;
 
-      double  HN = calculNet(HB, true, _valueStatut.toDouble());
-      double AN = calculNet(AB, true, _valueStatut.toDouble());
+      double  HN = calculNet(HB, true, cotisationsStatut.toDouble());
+      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
 
       updateUI(HB,MB,AB,HN,-1,AN, -1, -1);
 
@@ -692,14 +667,14 @@ class _HomePageState extends State<HomePage> {
   }
   void onANChange() {
     setState(() {
-      double? AN = double.tryParse(ANController.text);
+      double? AN = double.tryParse(annuelNet.text);
 
-      double MN = AN!/_valuePrime;
-      double HN = MN/ 152 * (_dureeTravail/100);
+      double MN = AN!/moisPrimeConventionnelle;
+      double HN = MN/ 152 * (tempsTravail/100);
 
-      double  HB = calculNet(HN, false, _valueStatut.toDouble());
-      double  MB = calculNet(MN, false, _valueStatut.toDouble());
-      double AB = calculNet(AN, false, _valueStatut.toDouble());
+      double  HB = calculNet(HN, false, cotisationsStatut.toDouble());
+      double  MB = calculNet(MN, false, cotisationsStatut.toDouble());
+      double AB = calculNet(AN, false, cotisationsStatut.toDouble());
 
       updateUI(HB,MB,AB,HN,MN,-1, -1, -1);
 
@@ -709,5 +684,3 @@ class _HomePageState extends State<HomePage> {
   void onMNIPChange() {}
 
 }
-//HORAIRE NET = HORAIRE BRUT -statut% (22 pour non cadre)
-//button reset

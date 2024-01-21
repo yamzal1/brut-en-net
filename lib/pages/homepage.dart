@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import '../components/text_field.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -20,8 +22,8 @@ class HomePageState extends State<HomePage> {
   final mensuelNetController = TextEditingController();
   final annuelNetController = TextEditingController();
 
-  final mensuelNetApresImpots = TextEditingController();
-  final annuelNetApresImpots = TextEditingController();
+  final mensuelNetApresImpotsController = TextEditingController();
+  final annuelNetApresImpotsController = TextEditingController();
 
   double tempsTravail = 100;
   double tauxPrelevementSource = 0;
@@ -81,57 +83,9 @@ class HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: horaireBrutController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Horaire brut',
-                                ),
-                                keyboardType: TextInputType.number,
-                                validator: (amount) => amount != null &&
-                                        double.tryParse(amount) == null
-                                    ? 'Saisir un nombre valide'
-                                    : null,
-                                onChanged: (text) {
-                                  onHoraireBrutChange();
-                                },
-                              )),
-                          Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: mensuelBrutController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Mensuel brut',
-                                ),
-                                keyboardType: TextInputType.number,
-                                validator: (amount) => amount != null &&
-                                        double.tryParse(amount) == null
-                                    ? 'Saisir un nombre valide'
-                                    : null,
-                                onChanged: (text) {
-                                  onMensuelBrutChange();
-                                },
-                              )),
-                          Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextFormField(
-                                controller: annuelBrutController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Annuel brut',
-                                ),
-                                keyboardType: TextInputType.number,
-                                validator: (amount) => amount != null &&
-                                        double.tryParse(amount) == null
-                                    ? 'Saisir un nombre valide'
-                                    : null,
-                                onChanged: (text) {
-                                  onAnnuelBrutChange();
-                                },
-                              )),
+                          CustomTextField(controller: horaireBrutController, label: 'Horaire brut', onTextChanged: onHoraireBrutChange),
+                          CustomTextField(controller: mensuelBrutController, label: 'Mensuel brut', onTextChanged: onMensuelBrutChange),
+                          CustomTextField(controller: annuelBrutController, label: 'Annuel brut', onTextChanged: onAnnuelBrutChange),
                         ],
                       ),
                     ),
@@ -139,57 +93,9 @@ class HomePageState extends State<HomePage> {
                   Expanded(
                     child: Column(
                       children: [
-                        Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: horaireNetController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Horaire net',
-                              ),
-                              keyboardType: TextInputType.number,
-                              validator: (amount) => amount != null &&
-                                      double.tryParse(amount) == null
-                                  ? 'Saisir un nombre valide'
-                                  : null,
-                              onChanged: (text) {
-                                onHoraireNetChange();
-                              },
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: mensuelNetController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Mensuel net',
-                              ),
-                              keyboardType: TextInputType.number,
-                              validator: (amount) => amount != null &&
-                                      double.tryParse(amount) == null
-                                  ? 'Saisir un nombre valide'
-                                  : null,
-                              onChanged: (text) {
-                                onMensuelNetChange();
-                              },
-                            )),
-                        Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: annuelNetController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Annuel net',
-                              ),
-                              keyboardType: TextInputType.number,
-                              validator: (amount) => amount != null &&
-                                      double.tryParse(amount) == null
-                                  ? 'Saisir un nombre valide'
-                                  : null,
-                              onChanged: (text) {
-                                onAnnuelNetChange();
-                              },
-                            )),
+                        CustomTextField(controller: horaireNetController, label: 'Horaire net', onTextChanged: onHoraireNetChange),
+                        CustomTextField(controller: mensuelNetController, label: 'Mensuel net', onTextChanged: onMensuelNetChange),
+                        CustomTextField(controller: annuelNetController, label: 'Annuel net', onTextChanged: onAnnuelNetChange),
                       ],
                     ),
                   ),
@@ -463,42 +369,12 @@ class HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: mensuelNetApresImpots,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Mensuel net après impôts',
-                            ),
-                            keyboardType: TextInputType.number,
-                            validator: (amount) => amount != null &&
-                                    double.tryParse(amount) == null
-                                ? 'Saisir un nombre valide'
-                                : null,
-                            onChanged: (text) {
-                              onMensuelNetApresImpotsChange();
-                            },
-                          )),
+                      child:
+                      CustomTextField(controller: mensuelNetApresImpotsController, label: 'Mensuel net après impôts', onTextChanged: onMensuelNetApresImpotsChange),
                     ),
                     Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: annuelNetApresImpots,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Annuel net après impôts',
-                            ),
-                            keyboardType: TextInputType.number,
-                            validator: (amount) => amount != null &&
-                                    double.tryParse(amount) == null
-                                ? 'Saisir un nombre valide'
-                                : null,
-                            onChanged: (text) {
-                              onAnnuelNetApresImpotsChange();
-                            },
-                          )),
+                      child:
+                      CustomTextField(controller: annuelNetApresImpotsController, label: 'Annuel net après impôts', onTextChanged: onAnnuelNetApresImpotsChange),
                     ),
                   ],
                 ),
@@ -516,8 +392,8 @@ class HomePageState extends State<HomePage> {
                             horaireNetController.clear();
                             mensuelNetController.clear();
                             annuelNetController.clear();
-                            mensuelNetApresImpots.clear();
-                            annuelNetApresImpots.clear();
+                            mensuelNetApresImpotsController.clear();
+                            annuelNetApresImpotsController.clear();
                           },
                           child: const Text('Réinitialiser'),
                         )),
@@ -529,7 +405,7 @@ class HomePageState extends State<HomePage> {
         ]),
       );
 
-  void onHoraireBrutChange() {
+  void onHoraireBrutChange(String value) {
     setState(() {
       double? horaireBrut = double.tryParse(horaireBrutController.text);
       double horaireNet =
@@ -586,15 +462,15 @@ class HomePageState extends State<HomePage> {
     }
     if (!anip.isNegative) {
       anip = roundDouble(an, 2);
-      annuelNetApresImpots.text = anip.toString();
+      annuelNetApresImpotsController.text = anip.toString();
     }
     if (!mnip.isNegative) {
       mnip = roundDouble(mnip, 2);
-      mensuelNetApresImpots.text = mnip.toString();
+      mensuelNetApresImpotsController.text = mnip.toString();
     }
   }
 
-  void onMensuelBrutChange() {
+  void onMensuelBrutChange(String value) {
     setState(() {
       double? mensuelBrut = double.tryParse(mensuelBrutController.text);
 
@@ -614,7 +490,7 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  void onAnnuelBrutChange() {
+  void onAnnuelBrutChange(String value) {
     setState(() {
       double? annuelBrut = double.tryParse(annuelBrutController.text);
 
@@ -633,7 +509,7 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  void onHoraireNetChange() {
+  void onHoraireNetChange(String value) {
     setState(() {
       double? horaireNet = double.tryParse(horaireNetController.text);
       double horaireBrut =
@@ -652,7 +528,7 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  void onMensuelNetChange() {
+  void onMensuelNetChange(String value) {
     setState(() {
       double? mensuelNet = double.tryParse(mensuelNetController.text);
       double mensuelBrut =
@@ -671,7 +547,7 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  void onAnnuelNetChange() {
+  void onAnnuelNetChange(String value) {
     setState(() {
       double? annuelNet = double.tryParse(annuelNetController.text);
 
@@ -690,7 +566,7 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  void onAnnuelNetApresImpotsChange() {}
+  void onAnnuelNetApresImpotsChange(String value) {}
 
-  void onMensuelNetApresImpotsChange() {}
+  void onMensuelNetApresImpotsChange(String value) {}
 }

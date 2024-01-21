@@ -46,7 +46,8 @@ class HomePageState extends State<HomePage> {
         double annuelNet =
             calculNet(annuelBrut!, true, cotisationsStatut.toDouble());
 
-        updateUI(-1, -1, -1, horaireNet, mensuelNet, annuelNet, -1, -1);
+        updateUI(
+            null, null, null, horaireNet, mensuelNet, annuelNet, null, null);
       }
     });
   }
@@ -59,7 +60,7 @@ class HomePageState extends State<HomePage> {
         double annuelBrut = mensuelBrut! * moisPrimeConventionnelle;
         double annuelNet =
             calculNet(annuelBrut, true, cotisationsStatut.toDouble());
-        updateUI(-1, -1, annuelBrut, -1, -1, annuelNet, -1, -1);
+        updateUI(null, null, annuelBrut, null, null, annuelNet, null, null);
       }
     });
   }
@@ -83,9 +84,18 @@ class HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          CustomTextField(controller: horaireBrutController, label: 'Horaire brut', onTextChanged: onHoraireBrutChange),
-                          CustomTextField(controller: mensuelBrutController, label: 'Mensuel brut', onTextChanged: onMensuelBrutChange),
-                          CustomTextField(controller: annuelBrutController, label: 'Annuel brut', onTextChanged: onAnnuelBrutChange),
+                          CustomTextField(
+                              controller: horaireBrutController,
+                              label: 'Horaire brut',
+                              onTextChanged: onHoraireBrutChange),
+                          CustomTextField(
+                              controller: mensuelBrutController,
+                              label: 'Mensuel brut',
+                              onTextChanged: onMensuelBrutChange),
+                          CustomTextField(
+                              controller: annuelBrutController,
+                              label: 'Annuel brut',
+                              onTextChanged: onAnnuelBrutChange),
                         ],
                       ),
                     ),
@@ -93,9 +103,18 @@ class HomePageState extends State<HomePage> {
                   Expanded(
                     child: Column(
                       children: [
-                        CustomTextField(controller: horaireNetController, label: 'Horaire net', onTextChanged: onHoraireNetChange),
-                        CustomTextField(controller: mensuelNetController, label: 'Mensuel net', onTextChanged: onMensuelNetChange),
-                        CustomTextField(controller: annuelNetController, label: 'Annuel net', onTextChanged: onAnnuelNetChange),
+                        CustomTextField(
+                            controller: horaireNetController,
+                            label: 'Horaire net',
+                            onTextChanged: onHoraireNetChange),
+                        CustomTextField(
+                            controller: mensuelNetController,
+                            label: 'Mensuel net',
+                            onTextChanged: onMensuelNetChange),
+                        CustomTextField(
+                            controller: annuelNetController,
+                            label: 'Annuel net',
+                            onTextChanged: onAnnuelNetChange),
                       ],
                     ),
                   ),
@@ -316,8 +335,8 @@ class HomePageState extends State<HomePage> {
                         double annuelNet = calculNet(
                             annuelBrut, true, cotisationsStatut.toDouble());
 
-                        updateUI(-1, mensuelBrut, annuelBrut, -1, mensuelNet,
-                            annuelNet, -1, -1);
+                        updateUI(null, mensuelBrut, annuelBrut, null,
+                            mensuelNet, annuelNet, null, null);
                       }
                     });
                   },
@@ -357,8 +376,8 @@ class HomePageState extends State<HomePage> {
                             double.tryParse(annuelNetController.text);
                         double annuelNetApresImpots =
                             annuelNet! * (1 - tauxPrelevementSource / 100);
-                        updateUI(-1, -1, -1, -1, -1, -1, mensuelNetApresImpots,
-                            annuelNetApresImpots);
+                        updateUI(null, null, null, null, null, null,
+                            mensuelNetApresImpots, annuelNetApresImpots);
                       }
                     });
                   },
@@ -369,12 +388,16 @@ class HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child:
-                      CustomTextField(controller: mensuelNetApresImpotsController, label: 'Mensuel net après impôts', onTextChanged: onMensuelNetApresImpotsChange),
+                      child: CustomTextField(
+                          controller: mensuelNetApresImpotsController,
+                          label: 'Mensuel net après impôts',
+                          onTextChanged: onMensuelNetApresImpotsChange),
                     ),
                     Expanded(
-                      child:
-                      CustomTextField(controller: annuelNetApresImpotsController, label: 'Annuel net après impôts', onTextChanged: onAnnuelNetApresImpotsChange),
+                      child: CustomTextField(
+                          controller: annuelNetApresImpotsController,
+                          label: 'Annuel net après impôts',
+                          onTextChanged: onAnnuelNetApresImpotsChange),
                     ),
                   ],
                 ),
@@ -417,8 +440,8 @@ class HomePageState extends State<HomePage> {
       double annuelNet =
           calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(-1, mensuelBrut, annuelBrut, horaireNet, mensuelNet, annuelNet,
-          -1, -1);
+      updateUI(null, mensuelBrut, annuelBrut, horaireNet, mensuelNet, annuelNet,
+          null, null);
     });
   }
 
@@ -434,40 +457,26 @@ class HomePageState extends State<HomePage> {
     return ((value * mod).round().toDouble() / mod);
   }
 
-  void updateUI(double hb, double mb, double ab, double hn, double mn,
-      double an, double mnip, double anip) {
-    if (!hb.isNegative) {
-      hb = roundDouble(hb, 2);
-      horaireBrutController.text = hb.toString();
-    }
-    if (!mb.isNegative) {
-      mb = roundDouble(mb, 2);
-      mensuelBrutController.text = mb.toString();
-    }
-    if (!ab.isNegative) {
-      ab = roundDouble(ab, 2);
-      annuelBrutController.text = ab.toString();
-    }
-    if (!hn.isNegative) {
-      hn = roundDouble(hn, 2);
-      horaireNetController.text = hn.toString();
-    }
-    if (!mn.isNegative) {
-      mn = roundDouble(mn, 2);
-      mensuelNetController.text = mn.toString();
-    }
-    if (!an.isNegative) {
-      an = roundDouble(an, 2);
-      annuelNetController.text = an.toString();
-    }
-    if (!anip.isNegative) {
-      anip = roundDouble(an, 2);
-      annuelNetApresImpotsController.text = anip.toString();
-    }
-    if (!mnip.isNegative) {
-      mnip = roundDouble(mnip, 2);
-      mensuelNetApresImpotsController.text = mnip.toString();
-    }
+  void updateUI(double? hb, double? mb, double? ab, double? hn, double? mn,
+      double? an, double? mnip, double? anip) {
+    horaireBrutController.text =
+        hb != null ? roundDouble(hb, 2).toString() : horaireBrutController.text;
+    mensuelBrutController.text =
+        mb != null ? roundDouble(mb, 2).toString() : mensuelBrutController.text;
+    annuelBrutController.text =
+        ab != null ? roundDouble(ab, 2).toString() : annuelBrutController.text;
+    horaireNetController.text =
+        hn != null ? roundDouble(hn, 2).toString() : horaireNetController.text;
+    mensuelNetController.text =
+        mn != null ? roundDouble(mn, 2).toString() : mensuelNetController.text;
+    annuelNetController.text =
+        an != null ? roundDouble(an, 2).toString() : annuelNetController.text;
+    mensuelNetApresImpotsController.text = mnip != null
+        ? roundDouble(mnip, 2).toString()
+        : mensuelNetApresImpotsController.text;
+    annuelNetApresImpotsController.text = anip != null
+        ? roundDouble(anip, 2).toString()
+        : annuelNetApresImpotsController.text;
   }
 
   void onMensuelBrutChange(String value) {
@@ -485,8 +494,8 @@ class HomePageState extends State<HomePage> {
       double annuelNet =
           calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut, -1, annuelBrut, horaireNet, mensuelNet, annuelNet,
-          -1, -1);
+      updateUI(horaireBrut, null, annuelBrut, horaireNet, mensuelNet, annuelNet,
+          null, null);
     });
   }
 
@@ -504,8 +513,8 @@ class HomePageState extends State<HomePage> {
       double annuelNet =
           calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut, mensuelBrut, -1, horaireNet, mensuelNet, annuelNet,
-          -1, -1);
+      updateUI(horaireBrut, mensuelBrut, null, horaireNet, mensuelNet,
+          annuelNet, null, null);
     });
   }
 
@@ -523,8 +532,8 @@ class HomePageState extends State<HomePage> {
       double annuelNet =
           calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut, mensuelBrut, annuelBrut, -1, mensuelNet, annuelNet,
-          -1, -1);
+      updateUI(horaireBrut, mensuelBrut, annuelBrut, null, mensuelNet,
+          annuelNet, null, null);
     });
   }
 
@@ -542,8 +551,8 @@ class HomePageState extends State<HomePage> {
       double annuelNet =
           calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut, mensuelBrut, annuelBrut, horaireNet, -1, annuelNet,
-          -1, -1);
+      updateUI(horaireBrut, mensuelBrut, annuelBrut, horaireNet, null,
+          annuelNet, null, null);
     });
   }
 
@@ -561,8 +570,8 @@ class HomePageState extends State<HomePage> {
       double annuelBrut =
           calculNet(annuelNet, false, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut, mensuelBrut, annuelBrut, horaireNet, mensuelNet, -1,
-          -1, -1);
+      updateUI(horaireBrut, mensuelBrut, annuelBrut, horaireNet, mensuelNet,
+          null, null, null);
     });
   }
 

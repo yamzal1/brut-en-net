@@ -12,17 +12,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final nameController = TextEditingController();
-  final horaireBrut = TextEditingController();
-  final mensuelBrut = TextEditingController();
-  final annuelBrut = TextEditingController();
+  final horaireBrutController = TextEditingController();
+  final mensuelBrutController = TextEditingController();
+  final annuelBrutController = TextEditingController();
 
-  final horaireNet = TextEditingController();
-  final mensuelNet = TextEditingController();
-  final annuelNet = TextEditingController();
+  final horaireNetController = TextEditingController();
+  final mensuelNetController = TextEditingController();
+  final annuelNetController = TextEditingController();
 
   final mensuelNetApresImpots = TextEditingController();
   final annuelNetApresImpots = TextEditingController();
-
 
   double tempsTravail = 100;
   double tauxPrelevementSource = 0;
@@ -33,16 +32,16 @@ class _HomePageState extends State<HomePage> {
   void changementStatut(int? value) {
     setState(() {
       cotisationsStatut = value ?? 0;
-      if(horaireBrut.text.isNotEmpty){
-        double? HB = double.tryParse(horaireBrut.text);
-        double? MB = double.tryParse(mensuelBrut.text);
-        double? AB = double.tryParse(annuelBrut.text);
+      if(horaireBrutController.text.isNotEmpty){
+        double? horaireBrut = double.tryParse(horaireBrutController.text);
+        double? mensuelBrut = double.tryParse(mensuelBrutController.text);
+        double? annuelBrut = double.tryParse(annuelBrutController.text);
 
-        double  HN = calculNet(HB!, true, cotisationsStatut.toDouble());
-        double  MN = calculNet(MB!, true, cotisationsStatut.toDouble());
-        double AN = calculNet(AB!, true, cotisationsStatut.toDouble());
+        double  horaireNet = calculNet(horaireBrut!, true, cotisationsStatut.toDouble());
+        double  mensuelNet = calculNet(mensuelBrut!, true, cotisationsStatut.toDouble());
+        double annuelNet = calculNet(annuelBrut!, true, cotisationsStatut.toDouble());
 
-        updateUI(-1,-1,-1,HN,MN,AN, -1, -1);
+        updateUI(-1,-1,-1,horaireNet,mensuelNet,annuelNet, -1, -1);
       }
     });
   }
@@ -50,11 +49,11 @@ class _HomePageState extends State<HomePage> {
   void changementPrime(int? value) {
     setState(() {
       moisPrimeConventionnelle = value ?? 0;
-      if (mensuelBrut.text.isNotEmpty) {
-        double? MB = double.tryParse(mensuelBrut.text);
-        double AB = MB! * moisPrimeConventionnelle;
-        double AN = calculNet(AB, true, cotisationsStatut.toDouble());
-        updateUI(-1, -1, AB, -1, -1, AN, -1, -1);
+      if (mensuelBrutController.text.isNotEmpty) {
+        double? mensuelBrut = double.tryParse(mensuelBrutController.text);
+        double annuelBrut = mensuelBrut! * moisPrimeConventionnelle;
+        double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+        updateUI(-1, -1, annuelBrut, -1, -1, annuelNet, -1, -1);
       }
     });
   }
@@ -81,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
-                              controller: horaireBrut,
+                              controller: horaireBrutController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Horaire brut',
@@ -91,14 +90,14 @@ class _HomePageState extends State<HomePage> {
                                   ? 'Saisir un nombre valide'
                                   : null,
                               onChanged: (text){
-                                onHBChange();
+                                onHoraireBrutChange();
                               },
                             )
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
-                              controller: mensuelBrut,
+                              controller: mensuelBrutController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Mensuel brut',
@@ -108,14 +107,14 @@ class _HomePageState extends State<HomePage> {
                                   ? 'Saisir un nombre valide'
                                   : null,
                               onChanged: (text){
-                                onMBChange();
+                                onMensuelBrutChange();
                               },
                             )
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
-                              controller: annuelBrut,
+                              controller: annuelBrutController,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Annuel brut',
@@ -125,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                                   ? 'Saisir un nombre valide'
                                   : null,
                               onChanged: (text){
-                                onABChange();
+                                onAnnuelBrutChange();
                               },
                             )
                           ),
@@ -139,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            controller: horaireNet,
+                            controller: horaireNetController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Horaire net',
@@ -149,14 +148,14 @@ class _HomePageState extends State<HomePage> {
                                 ? 'Saisir un nombre valide'
                                 : null,
                             onChanged: (text){
-                              onHNChange();
+                              onHoraireNetChange();
                             },
                           )
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            controller: mensuelNet,
+                            controller: mensuelNetController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Mensuel net',
@@ -166,14 +165,14 @@ class _HomePageState extends State<HomePage> {
                                 ? 'Saisir un nombre valide'
                                 : null,
                             onChanged: (text){
-                              onMNChange();
+                              onMensuelNetChange();
                             },
                           )
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
-                            controller: annuelNet,
+                            controller: annuelNetController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Annuel net',
@@ -183,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                                 ? 'Saisir un nombre valide'
                                 : null,
                             onChanged: (text){
-                              onANChange();
+                              onAnnuelNetChange();
                             },
                           )
                         ),
@@ -403,18 +402,18 @@ class _HomePageState extends State<HomePage> {
                       tempsTravail = value;
 
 
-                      if(horaireBrut.text.isNotEmpty) {
-                        double? HB = double.tryParse(horaireBrut.text);
+                      if(horaireBrutController.text.isNotEmpty) {
+                        double? horaireBrut = double.tryParse(horaireBrutController.text);
 
-                        double MB = HB! * 152 * (tempsTravail / 100);
-                        double MN =
-                            calculNet(MB, true, cotisationsStatut.toDouble());
+                        double mensuelBrut = horaireBrut! * 152 * (tempsTravail / 100);
+                        double mensuelNet =
+                            calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
 
-                        double AB = MB * moisPrimeConventionnelle;
-                        double AN =
-                            calculNet(AB, true, cotisationsStatut.toDouble());
+                        double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
+                        double annuelNet =
+                            calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-                        updateUI(-1, MB, AB, -1, MN, AN, -1, -1);
+                        updateUI(-1, mensuelBrut, annuelBrut, -1, mensuelNet, annuelNet, -1, -1);
                       }
                     });
                   },
@@ -447,13 +446,13 @@ class _HomePageState extends State<HomePage> {
                   onChanged: (dynamic value) {
                     setState(() {
                       tauxPrelevementSource = value;
-                      if(mensuelNet.text.isNotEmpty){
+                      if(mensuelNetController.text.isNotEmpty){
 
-                        double? MN = double.tryParse(mensuelNet.text);
-                        double MNIP = MN!*(1-tauxPrelevementSource/100);
-                        double? AN = double.tryParse(annuelNet.text);
-                        double ANIP = AN!*(1-tauxPrelevementSource/100);
-                        updateUI(-1, -1, -1, -1, -1, -1, MNIP, ANIP);
+                        double? mensuelNet = double.tryParse(mensuelNetController.text);
+                        double mensuelNetApresImpots = mensuelNet!*(1-tauxPrelevementSource/100);
+                        double? annuelNet = double.tryParse(annuelNetController.text);
+                        double annuelNetApresImpots = annuelNet!*(1-tauxPrelevementSource/100);
+                        updateUI(-1, -1, -1, -1, -1, -1, mensuelNetApresImpots, annuelNetApresImpots);
 
                       }
 
@@ -480,7 +479,7 @@ class _HomePageState extends State<HomePage> {
                               ? 'Saisir un nombre valide'
                               : null,
                           onChanged: (text){
-                            onMNIPChange();
+                            onMensuelNetApresImpotsChange();
                           },
                         )
                       ),
@@ -499,7 +498,7 @@ class _HomePageState extends State<HomePage> {
                               ? 'Saisir un nombre valide'
                               : null,
                           onChanged: (text){
-                            onANIPChange();
+                            onAnnuelNetApresImpotsChange();
                           },
                         )
                       ),
@@ -516,12 +515,12 @@ class _HomePageState extends State<HomePage> {
                         child: OutlinedButton(
                           onPressed: () {
 
-                            horaireBrut.clear();
-                            mensuelBrut.clear();
-                            annuelBrut.clear();
-                            horaireNet.clear();
-                            mensuelNet.clear();
-                            annuelNet.clear();
+                            horaireBrutController.clear();
+                            mensuelBrutController.clear();
+                            annuelBrutController.clear();
+                            horaireNetController.clear();
+                            mensuelNetController.clear();
+                            annuelNetController.clear();
                             mensuelNetApresImpots.clear();
                             annuelNetApresImpots.clear();
 
@@ -540,17 +539,16 @@ class _HomePageState extends State<HomePage> {
 
 
 
-  void onHBChange() {
+  void onHoraireBrutChange() {
     setState(() {
-      double? HB = double.tryParse(horaireBrut.text);
-      double  HN = calculNet(HB!, true, cotisationsStatut.toDouble());
-      double MB = HB* 152 * (tempsTravail/100);
-      double  MN = calculNet(MB, true, cotisationsStatut.toDouble());
-      double AB = MB*moisPrimeConventionnelle;
-      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
+      double? horaireBrut = double.tryParse(horaireBrutController.text);
+      double  horaireNet = calculNet(horaireBrut!, true, cotisationsStatut.toDouble());
+      double mensuelBrut = horaireBrut* 152 * (tempsTravail/100);
+      double  mensuelNet = calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+      double annuelBrut = mensuelBrut*moisPrimeConventionnelle;
+      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(-1,MB,AB,HN,MN,AN, -1, -1);
-
+      updateUI(-1,mensuelBrut,annuelBrut,horaireNet,mensuelNet,annuelNet, -1, -1);
     });
   }
 
@@ -559,9 +557,7 @@ class _HomePageState extends State<HomePage> {
     if(!isBrut) {
       return  roundDouble(salaire / (1-statut/100), 2);
     }
-
     return  roundDouble(salaire * (1-statut/100), 2);
-
   }
 
   double roundDouble(double value, int places){
@@ -572,27 +568,27 @@ class _HomePageState extends State<HomePage> {
   void updateUI(double hb, double mb, double ab, double hn, double mn, double an, double mnip, double anip) {
     if(!hb.isNegative) {
       hb = roundDouble(hb,2);
-      horaireBrut.text = hb.toString();
+      horaireBrutController.text = hb.toString();
     }
     if(!mb.isNegative) {
       mb = roundDouble(mb,2);
-      mensuelBrut.text = mb.toString();
+      mensuelBrutController.text = mb.toString();
     }
     if(!ab.isNegative) {
       ab = roundDouble(ab,2);
-      annuelBrut.text = ab.toString();
+      annuelBrutController.text = ab.toString();
     }
     if(!hn.isNegative) {
       hn = roundDouble(hn,2);
-      horaireNet.text = hn.toString();
+      horaireNetController.text = hn.toString();
     }
     if(!mn.isNegative) {
       mn = roundDouble(mn,2);
-      mensuelNet.text = mn.toString();
+      mensuelNetController.text = mn.toString();
     }
     if(!an.isNegative) {
       an = roundDouble(an,2);
-      annuelNet.text = an.toString();
+      annuelNetController.text = an.toString();
     }
     if(!anip.isNegative) {
       anip = roundDouble(an,2);
@@ -604,83 +600,83 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void onMBChange() {
+  void onMensuelBrutChange() {
     setState(() {
-      double? MB = double.tryParse(mensuelBrut.text);
+      double? mensuelBrut = double.tryParse(mensuelBrutController.text);
 
-      double HB = MB!/ 152 * (tempsTravail/100);
+      double horaireBrut = mensuelBrut!/ 152 * (tempsTravail/100);
 
-      double  HN = calculNet(HB, true, cotisationsStatut.toDouble());
-      double  MN = calculNet(MB, true, cotisationsStatut.toDouble());
+      double  horaireNet = calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+      double  mensuelNet = calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
 
-      double AB = MB*moisPrimeConventionnelle;
-      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
+      double annuelBrut = mensuelBrut*moisPrimeConventionnelle;
+      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(HB,-1,AB,HN,MN,AN, -1, -1);
+      updateUI(horaireBrut,-1,annuelBrut,horaireNet,mensuelNet,annuelNet, -1, -1);
 
     });
   }
-  void onABChange() {
+  void onAnnuelBrutChange() {
     setState(() {
-      double? AB = double.tryParse(annuelBrut.text);
+      double? annuelBrut = double.tryParse(annuelBrutController.text);
 
-      double MB = AB!/moisPrimeConventionnelle;
-      double HB = MB/ 152 * (tempsTravail/100);
+      double mensuelBrut = annuelBrut!/moisPrimeConventionnelle;
+      double horaireBrut = mensuelBrut/ 152 * (tempsTravail/100);
 
-      double  HN = calculNet(HB, true, cotisationsStatut.toDouble());
-      double  MN = calculNet(MB, true, cotisationsStatut.toDouble());
-      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
+      double horaireNet = calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+      double mensuelNet = calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(HB,MB,-1,HN,MN,AN, -1, -1);
+      updateUI(horaireBrut,mensuelBrut,-1,horaireNet,mensuelNet,annuelNet, -1, -1);
 
     });
   }
-  void onHNChange() {
+  void onHoraireNetChange() {
     setState(() {
-      double? HN = double.tryParse(horaireNet.text);
-      double  HB = calculNet(HN!, false, cotisationsStatut.toDouble());
+      double? horaireNet = double.tryParse(horaireNetController.text);
+      double  horaireBrut = calculNet(horaireNet!, false, cotisationsStatut.toDouble());
 
-      double MB = HB* 152 * (tempsTravail/100);
-      double AB = MB*moisPrimeConventionnelle;
+      double mensuelBrut = horaireBrut* 152 * (tempsTravail/100);
+      double annuelBrut = mensuelBrut*moisPrimeConventionnelle;
 
-      double  MN = calculNet(MB, true, cotisationsStatut.toDouble());
-      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
+      double  mensuelNet = calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(HB,MB,AB,-1,MN,AN, -1, -1);
+      updateUI(horaireBrut,mensuelBrut,annuelBrut,-1,mensuelNet,annuelNet, -1, -1);
 
     });
   }
-  void onMNChange() {
+  void onMensuelNetChange() {
     setState(() {
-      double? MN = double.tryParse(mensuelNet.text);
-      double  MB = calculNet(MN!, false, cotisationsStatut.toDouble());
+      double? mensuelNet = double.tryParse(mensuelNetController.text);
+      double  mensuelBrut = calculNet(mensuelNet!, false, cotisationsStatut.toDouble());
 
-      double HB = MB/ 152 * (tempsTravail/100);
-      double AB = MB*moisPrimeConventionnelle;
+      double horaireBrut = mensuelBrut/ 152 * (tempsTravail/100);
+      double annuelBrut = mensuelBrut*moisPrimeConventionnelle;
 
-      double  HN = calculNet(HB, true, cotisationsStatut.toDouble());
-      double AN = calculNet(AB, true, cotisationsStatut.toDouble());
+      double  horaireNet = calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(HB,MB,AB,HN,-1,AN, -1, -1);
+      updateUI(horaireBrut,mensuelBrut,annuelBrut,horaireNet,-1,annuelNet, -1, -1);
 
     });
   }
-  void onANChange() {
+  void onAnnuelNetChange() {
     setState(() {
-      double? AN = double.tryParse(annuelNet.text);
+      double? annuelNet = double.tryParse(annuelNetController.text);
 
-      double MN = AN!/moisPrimeConventionnelle;
-      double HN = MN/ 152 * (tempsTravail/100);
+      double mensuelNet = annuelNet!/moisPrimeConventionnelle;
+      double horaireNet = mensuelNet/ 152 * (tempsTravail/100);
 
-      double  HB = calculNet(HN, false, cotisationsStatut.toDouble());
-      double  MB = calculNet(MN, false, cotisationsStatut.toDouble());
-      double AB = calculNet(AN, false, cotisationsStatut.toDouble());
+      double  horaireBrut = calculNet(horaireNet, false, cotisationsStatut.toDouble());
+      double  mensuelBrut = calculNet(mensuelNet, false, cotisationsStatut.toDouble());
+      double annuelBrut = calculNet(annuelNet, false, cotisationsStatut.toDouble());
 
-      updateUI(HB,MB,AB,HN,MN,-1, -1, -1);
+      updateUI(horaireBrut,mensuelBrut,annuelBrut,horaireNet,mensuelNet,-1, -1, -1);
 
     });
   }
-  void onANIPChange() {}
-  void onMNIPChange() {}
+  void onAnnuelNetApresImpotsChange() {}
+  void onMensuelNetApresImpotsChange() {}
 
 }

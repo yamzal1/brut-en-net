@@ -192,9 +192,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
 
-              Row(
+              const Row(
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Statut : ',
@@ -281,9 +281,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              Row(
+              const Row(
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Nombre de mois de prime conventionnelle : ',
@@ -372,9 +372,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
 
-              Row(
+              const Row(
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Temps de travail : ',
@@ -421,9 +421,9 @@ class _HomePageState extends State<HomePage> {
               ),
 
 
-              Row(
+              const Row(
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Taux de prélevement a la source : ',
@@ -525,7 +525,7 @@ class _HomePageState extends State<HomePage> {
                             annuelNetApresImpots.clear();
 
                           },
-                          child: Text('Réinitialiser'),
+                          child: const Text('Réinitialiser'),
                         )
                     ),
                   ),

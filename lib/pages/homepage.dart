@@ -32,16 +32,19 @@ class _HomePageState extends State<HomePage> {
   void changementStatut(int? value) {
     setState(() {
       cotisationsStatut = value ?? 0;
-      if(horaireBrutController.text.isNotEmpty){
+      if (horaireBrutController.text.isNotEmpty) {
         double? horaireBrut = double.tryParse(horaireBrutController.text);
         double? mensuelBrut = double.tryParse(mensuelBrutController.text);
         double? annuelBrut = double.tryParse(annuelBrutController.text);
 
-        double  horaireNet = calculNet(horaireBrut!, true, cotisationsStatut.toDouble());
-        double  mensuelNet = calculNet(mensuelBrut!, true, cotisationsStatut.toDouble());
-        double annuelNet = calculNet(annuelBrut!, true, cotisationsStatut.toDouble());
+        double horaireNet =
+            calculNet(horaireBrut!, true, cotisationsStatut.toDouble());
+        double mensuelNet =
+            calculNet(mensuelBrut!, true, cotisationsStatut.toDouble());
+        double annuelNet =
+            calculNet(annuelBrut!, true, cotisationsStatut.toDouble());
 
-        updateUI(-1,-1,-1,horaireNet,mensuelNet,annuelNet, -1, -1);
+        updateUI(-1, -1, -1, horaireNet, mensuelNet, annuelNet, -1, -1);
       }
     });
   }
@@ -52,7 +55,8 @@ class _HomePageState extends State<HomePage> {
       if (mensuelBrutController.text.isNotEmpty) {
         double? mensuelBrut = double.tryParse(mensuelBrutController.text);
         double annuelBrut = mensuelBrut! * moisPrimeConventionnelle;
-        double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+        double annuelNet =
+            calculNet(annuelBrut, true, cotisationsStatut.toDouble());
         updateUI(-1, -1, annuelBrut, -1, -1, annuelNet, -1, -1);
       }
     });
@@ -64,10 +68,10 @@ class _HomePageState extends State<HomePage> {
           title: const Text('Brut net'),
           centerTitle: true,
         ),
-        body: Flex(
-          direction: Axis.vertical,
-          children: [Column(
-            mainAxisAlignment: MainAxisAlignment.center, //Center Column contents vertically,
+        body: Flex(direction: Axis.vertical, children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            //Center Column contents vertically,
 
             children: [
               Row(
@@ -78,56 +82,56 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: horaireBrutController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Horaire brut',
-                              ),
-                              keyboardType: TextInputType.number,
-                              validator: (amount) => amount != null && double.tryParse(amount) == null
-                                  ? 'Saisir un nombre valide'
-                                  : null,
-                              onChanged: (text){
-                                onHoraireBrutChange();
-                              },
-                            )
-                          ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: horaireBrutController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Horaire brut',
+                                ),
+                                keyboardType: TextInputType.number,
+                                validator: (amount) => amount != null &&
+                                        double.tryParse(amount) == null
+                                    ? 'Saisir un nombre valide'
+                                    : null,
+                                onChanged: (text) {
+                                  onHoraireBrutChange();
+                                },
+                              )),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: mensuelBrutController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Mensuel brut',
-                              ),
-                              keyboardType: TextInputType.number,
-                              validator: (amount) => amount != null && double.tryParse(amount) == null
-                                  ? 'Saisir un nombre valide'
-                                  : null,
-                              onChanged: (text){
-                                onMensuelBrutChange();
-                              },
-                            )
-                          ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: mensuelBrutController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Mensuel brut',
+                                ),
+                                keyboardType: TextInputType.number,
+                                validator: (amount) => amount != null &&
+                                        double.tryParse(amount) == null
+                                    ? 'Saisir un nombre valide'
+                                    : null,
+                                onChanged: (text) {
+                                  onMensuelBrutChange();
+                                },
+                              )),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              controller: annuelBrutController,
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Annuel brut',
-                              ),
-                              keyboardType: TextInputType.number,
-                              validator: (amount) => amount != null && double.tryParse(amount) == null
-                                  ? 'Saisir un nombre valide'
-                                  : null,
-                              onChanged: (text){
-                                onAnnuelBrutChange();
-                              },
-                            )
-                          ),
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: annuelBrutController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Annuel brut',
+                                ),
+                                keyboardType: TextInputType.number,
+                                validator: (amount) => amount != null &&
+                                        double.tryParse(amount) == null
+                                    ? 'Saisir un nombre valide'
+                                    : null,
+                                onChanged: (text) {
+                                  onAnnuelBrutChange();
+                                },
+                              )),
                         ],
                       ),
                     ),
@@ -136,62 +140,61 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: horaireNetController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Horaire net',
-                            ),
-                            keyboardType: TextInputType.number,
-                            validator: (amount) => amount != null && double.tryParse(amount) == null
-                                ? 'Saisir un nombre valide'
-                                : null,
-                            onChanged: (text){
-                              onHoraireNetChange();
-                            },
-                          )
-                        ),
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: horaireNetController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Horaire net',
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (amount) => amount != null &&
+                                      double.tryParse(amount) == null
+                                  ? 'Saisir un nombre valide'
+                                  : null,
+                              onChanged: (text) {
+                                onHoraireNetChange();
+                              },
+                            )),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: mensuelNetController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Mensuel net',
-                            ),
-                            keyboardType: TextInputType.number,
-                            validator: (amount) => amount != null && double.tryParse(amount) == null
-                                ? 'Saisir un nombre valide'
-                                : null,
-                            onChanged: (text){
-                              onMensuelNetChange();
-                            },
-                          )
-                        ),
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: mensuelNetController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Mensuel net',
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (amount) => amount != null &&
+                                      double.tryParse(amount) == null
+                                  ? 'Saisir un nombre valide'
+                                  : null,
+                              onChanged: (text) {
+                                onMensuelNetChange();
+                              },
+                            )),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: annuelNetController,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Annuel net',
-                            ),
-                            keyboardType: TextInputType.number,
-                            validator: (amount) => amount != null && double.tryParse(amount) == null
-                                ? 'Saisir un nombre valide'
-                                : null,
-                            onChanged: (text){
-                              onAnnuelNetChange();
-                            },
-                          )
-                        ),
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: annuelNetController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Annuel net',
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (amount) => amount != null &&
+                                      double.tryParse(amount) == null
+                                  ? 'Saisir un nombre valide'
+                                  : null,
+                              onChanged: (text) {
+                                onAnnuelNetChange();
+                              },
+                            )),
                       ],
                     ),
                   ),
                 ],
               ),
-
               const Row(
                 children: [
                   Padding(
@@ -203,7 +206,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -280,7 +282,6 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-
               const Row(
                 children: [
                   Padding(
@@ -292,13 +293,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-
                     Radio(
                       value: 12,
                       groupValue: moisPrimeConventionnelle,
@@ -367,11 +366,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
-
               const Row(
                 children: [
                   Padding(
@@ -383,8 +380,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: SfSlider(
@@ -401,26 +396,27 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                       tempsTravail = value;
 
+                      if (horaireBrutController.text.isNotEmpty) {
+                        double? horaireBrut =
+                            double.tryParse(horaireBrutController.text);
 
-                      if(horaireBrutController.text.isNotEmpty) {
-                        double? horaireBrut = double.tryParse(horaireBrutController.text);
+                        double mensuelBrut =
+                            horaireBrut! * 152 * (tempsTravail / 100);
+                        double mensuelNet = calculNet(
+                            mensuelBrut, true, cotisationsStatut.toDouble());
 
-                        double mensuelBrut = horaireBrut! * 152 * (tempsTravail / 100);
-                        double mensuelNet =
-                            calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+                        double annuelBrut =
+                            mensuelBrut * moisPrimeConventionnelle;
+                        double annuelNet = calculNet(
+                            annuelBrut, true, cotisationsStatut.toDouble());
 
-                        double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
-                        double annuelNet =
-                            calculNet(annuelBrut, true, cotisationsStatut.toDouble());
-
-                        updateUI(-1, mensuelBrut, annuelBrut, -1, mensuelNet, annuelNet, -1, -1);
+                        updateUI(-1, mensuelBrut, annuelBrut, -1, mensuelNet,
+                            annuelNet, -1, -1);
                       }
                     });
                   },
                 ),
               ),
-
-
               const Row(
                 children: [
                   Padding(
@@ -446,17 +442,18 @@ class _HomePageState extends State<HomePage> {
                   onChanged: (dynamic value) {
                     setState(() {
                       tauxPrelevementSource = value;
-                      if(mensuelNetController.text.isNotEmpty){
-
-                        double? mensuelNet = double.tryParse(mensuelNetController.text);
-                        double mensuelNetApresImpots = mensuelNet!*(1-tauxPrelevementSource/100);
-                        double? annuelNet = double.tryParse(annuelNetController.text);
-                        double annuelNetApresImpots = annuelNet!*(1-tauxPrelevementSource/100);
-                        updateUI(-1, -1, -1, -1, -1, -1, mensuelNetApresImpots, annuelNetApresImpots);
-
+                      if (mensuelNetController.text.isNotEmpty) {
+                        double? mensuelNet =
+                            double.tryParse(mensuelNetController.text);
+                        double mensuelNetApresImpots =
+                            mensuelNet! * (1 - tauxPrelevementSource / 100);
+                        double? annuelNet =
+                            double.tryParse(annuelNetController.text);
+                        double annuelNetApresImpots =
+                            annuelNet! * (1 - tauxPrelevementSource / 100);
+                        updateUI(-1, -1, -1, -1, -1, -1, mensuelNetApresImpots,
+                            annuelNetApresImpots);
                       }
-
-
                     });
                   },
                 ),
@@ -467,46 +464,45 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: mensuelNetApresImpots,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Mensuel net après impôts',
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: (amount) => amount != null && double.tryParse(amount) == null
-                              ? 'Saisir un nombre valide'
-                              : null,
-                          onChanged: (text){
-                            onMensuelNetApresImpotsChange();
-                          },
-                        )
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: mensuelNetApresImpots,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Mensuel net après impôts',
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (amount) => amount != null &&
+                                    double.tryParse(amount) == null
+                                ? 'Saisir un nombre valide'
+                                : null,
+                            onChanged: (text) {
+                              onMensuelNetApresImpotsChange();
+                            },
+                          )),
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: annuelNetApresImpots,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Annuel net après impôts',
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: (amount) => amount != null && double.tryParse(amount) == null
-                              ? 'Saisir un nombre valide'
-                              : null,
-                          onChanged: (text){
-                            onAnnuelNetApresImpotsChange();
-                          },
-                        )
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: annuelNetApresImpots,
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Annuel net après impôts',
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (amount) => amount != null &&
+                                    double.tryParse(amount) == null
+                                ? 'Saisir un nombre valide'
+                                : null,
+                            onChanged: (text) {
+                              onAnnuelNetApresImpotsChange();
+                            },
+                          )),
                     ),
                   ],
                 ),
               ),
-
               Row(
                 children: [
                   Expanded(
@@ -514,7 +510,6 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: OutlinedButton(
                           onPressed: () {
-
                             horaireBrutController.clear();
                             mensuelBrutController.clear();
                             annuelBrutController.clear();
@@ -523,79 +518,78 @@ class _HomePageState extends State<HomePage> {
                             annuelNetController.clear();
                             mensuelNetApresImpots.clear();
                             annuelNetApresImpots.clear();
-
                           },
                           child: const Text('Réinitialiser'),
-                        )
-                    ),
+                        )),
                   ),
                 ],
               ),
-
             ],
           ),
-       ] ),
+        ]),
       );
-
-
 
   void onHoraireBrutChange() {
     setState(() {
       double? horaireBrut = double.tryParse(horaireBrutController.text);
-      double  horaireNet = calculNet(horaireBrut!, true, cotisationsStatut.toDouble());
-      double mensuelBrut = horaireBrut* 152 * (tempsTravail/100);
-      double  mensuelNet = calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
-      double annuelBrut = mensuelBrut*moisPrimeConventionnelle;
-      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+      double horaireNet =
+          calculNet(horaireBrut!, true, cotisationsStatut.toDouble());
+      double mensuelBrut = horaireBrut * 152 * (tempsTravail / 100);
+      double mensuelNet =
+          calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+      double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
+      double annuelNet =
+          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(-1,mensuelBrut,annuelBrut,horaireNet,mensuelNet,annuelNet, -1, -1);
+      updateUI(-1, mensuelBrut, annuelBrut, horaireNet, mensuelNet, annuelNet,
+          -1, -1);
     });
   }
 
-
-  double calculNet(double salaire, bool isBrut, double statut){
-    if(!isBrut) {
-      return  roundDouble(salaire / (1-statut/100), 2);
+  double calculNet(double salaire, bool isBrut, double statut) {
+    if (!isBrut) {
+      return roundDouble(salaire / (1 - statut / 100), 2);
     }
-    return  roundDouble(salaire * (1-statut/100), 2);
+    return roundDouble(salaire * (1 - statut / 100), 2);
   }
 
-  double roundDouble(double value, int places){
+  double roundDouble(double value, int places) {
     num mod = pow(10.0, places);
     return ((value * mod).round().toDouble() / mod);
   }
 
-  void updateUI(double hb, double mb, double ab, double hn, double mn, double an, double mnip, double anip) {
-    if(!hb.isNegative) {
-      hb = roundDouble(hb,2);
+  void updateUI(double hb, double mb, double ab, double hn, double mn,
+      double an, double mnip, double anip) {
+    if (!hb.isNegative) {
+      hb = roundDouble(hb, 2);
       horaireBrutController.text = hb.toString();
     }
-    if(!mb.isNegative) {
-      mb = roundDouble(mb,2);
+    if (!mb.isNegative) {
+      mb = roundDouble(mb, 2);
       mensuelBrutController.text = mb.toString();
     }
-    if(!ab.isNegative) {
-      ab = roundDouble(ab,2);
+    if (!ab.isNegative) {
+      ab = roundDouble(ab, 2);
       annuelBrutController.text = ab.toString();
     }
-    if(!hn.isNegative) {
-      hn = roundDouble(hn,2);
+    if (!hn.isNegative) {
+      hn = roundDouble(hn, 2);
       horaireNetController.text = hn.toString();
     }
-    if(!mn.isNegative) {
-      mn = roundDouble(mn,2);
+    if (!mn.isNegative) {
+      mn = roundDouble(mn, 2);
       mensuelNetController.text = mn.toString();
     }
-    if(!an.isNegative) {
-      an = roundDouble(an,2);
+    if (!an.isNegative) {
+      an = roundDouble(an, 2);
       annuelNetController.text = an.toString();
     }
-    if(!anip.isNegative) {
-      anip = roundDouble(an,2);
+    if (!anip.isNegative) {
+      anip = roundDouble(an, 2);
       annuelNetApresImpots.text = anip.toString();
     }
-    if(!mnip.isNegative) {
-      mnip = roundDouble(mnip,2);
+    if (!mnip.isNegative) {
+      mnip = roundDouble(mnip, 2);
       mensuelNetApresImpots.text = mnip.toString();
     }
   }
@@ -604,79 +598,99 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       double? mensuelBrut = double.tryParse(mensuelBrutController.text);
 
-      double horaireBrut = mensuelBrut!/ 152 * (tempsTravail/100);
+      double horaireBrut = mensuelBrut! / 152 * (tempsTravail / 100);
 
-      double  horaireNet = calculNet(horaireBrut, true, cotisationsStatut.toDouble());
-      double  mensuelNet = calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+      double horaireNet =
+          calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+      double mensuelNet =
+          calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
 
-      double annuelBrut = mensuelBrut*moisPrimeConventionnelle;
-      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+      double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
+      double annuelNet =
+          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut,-1,annuelBrut,horaireNet,mensuelNet,annuelNet, -1, -1);
-
+      updateUI(horaireBrut, -1, annuelBrut, horaireNet, mensuelNet, annuelNet,
+          -1, -1);
     });
   }
+
   void onAnnuelBrutChange() {
     setState(() {
       double? annuelBrut = double.tryParse(annuelBrutController.text);
 
-      double mensuelBrut = annuelBrut!/moisPrimeConventionnelle;
-      double horaireBrut = mensuelBrut/ 152 * (tempsTravail/100);
+      double mensuelBrut = annuelBrut! / moisPrimeConventionnelle;
+      double horaireBrut = mensuelBrut / 152 * (tempsTravail / 100);
 
-      double horaireNet = calculNet(horaireBrut, true, cotisationsStatut.toDouble());
-      double mensuelNet = calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
-      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+      double horaireNet =
+          calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+      double mensuelNet =
+          calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+      double annuelNet =
+          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut,mensuelBrut,-1,horaireNet,mensuelNet,annuelNet, -1, -1);
-
+      updateUI(horaireBrut, mensuelBrut, -1, horaireNet, mensuelNet, annuelNet,
+          -1, -1);
     });
   }
+
   void onHoraireNetChange() {
     setState(() {
       double? horaireNet = double.tryParse(horaireNetController.text);
-      double  horaireBrut = calculNet(horaireNet!, false, cotisationsStatut.toDouble());
+      double horaireBrut =
+          calculNet(horaireNet!, false, cotisationsStatut.toDouble());
 
-      double mensuelBrut = horaireBrut* 152 * (tempsTravail/100);
-      double annuelBrut = mensuelBrut*moisPrimeConventionnelle;
+      double mensuelBrut = horaireBrut * 152 * (tempsTravail / 100);
+      double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
 
-      double  mensuelNet = calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
-      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+      double mensuelNet =
+          calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+      double annuelNet =
+          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut,mensuelBrut,annuelBrut,-1,mensuelNet,annuelNet, -1, -1);
-
+      updateUI(horaireBrut, mensuelBrut, annuelBrut, -1, mensuelNet, annuelNet,
+          -1, -1);
     });
   }
+
   void onMensuelNetChange() {
     setState(() {
       double? mensuelNet = double.tryParse(mensuelNetController.text);
-      double  mensuelBrut = calculNet(mensuelNet!, false, cotisationsStatut.toDouble());
+      double mensuelBrut =
+          calculNet(mensuelNet!, false, cotisationsStatut.toDouble());
 
-      double horaireBrut = mensuelBrut/ 152 * (tempsTravail/100);
-      double annuelBrut = mensuelBrut*moisPrimeConventionnelle;
+      double horaireBrut = mensuelBrut / 152 * (tempsTravail / 100);
+      double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
 
-      double  horaireNet = calculNet(horaireBrut, true, cotisationsStatut.toDouble());
-      double annuelNet = calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+      double horaireNet =
+          calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+      double annuelNet =
+          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut,mensuelBrut,annuelBrut,horaireNet,-1,annuelNet, -1, -1);
-
+      updateUI(horaireBrut, mensuelBrut, annuelBrut, horaireNet, -1, annuelNet,
+          -1, -1);
     });
   }
+
   void onAnnuelNetChange() {
     setState(() {
       double? annuelNet = double.tryParse(annuelNetController.text);
 
-      double mensuelNet = annuelNet!/moisPrimeConventionnelle;
-      double horaireNet = mensuelNet/ 152 * (tempsTravail/100);
+      double mensuelNet = annuelNet! / moisPrimeConventionnelle;
+      double horaireNet = mensuelNet / 152 * (tempsTravail / 100);
 
-      double  horaireBrut = calculNet(horaireNet, false, cotisationsStatut.toDouble());
-      double  mensuelBrut = calculNet(mensuelNet, false, cotisationsStatut.toDouble());
-      double annuelBrut = calculNet(annuelNet, false, cotisationsStatut.toDouble());
+      double horaireBrut =
+          calculNet(horaireNet, false, cotisationsStatut.toDouble());
+      double mensuelBrut =
+          calculNet(mensuelNet, false, cotisationsStatut.toDouble());
+      double annuelBrut =
+          calculNet(annuelNet, false, cotisationsStatut.toDouble());
 
-      updateUI(horaireBrut,mensuelBrut,annuelBrut,horaireNet,mensuelNet,-1, -1, -1);
-
+      updateUI(horaireBrut, mensuelBrut, annuelBrut, horaireNet, mensuelNet, -1,
+          -1, -1);
     });
   }
-  void onAnnuelNetApresImpotsChange() {}
-  void onMensuelNetApresImpotsChange() {}
 
+  void onAnnuelNetApresImpotsChange() {}
+
+  void onMensuelNetApresImpotsChange() {}
 }

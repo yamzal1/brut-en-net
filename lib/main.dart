@@ -5,15 +5,14 @@ void main() {
   runApp(MyApp());
 }
 
-
 class MyApp extends StatelessWidget {
-  static final String title = 'BRUT NET';
+  static const String title = 'BRUT NET';
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: title,
-    theme: ThemeData(primarySwatch: Colors.indigo),
-    home: const HomePage(),
-  );
+        debugShowCheckedModeBanner: false,
+        title: title,
+        theme: ThemeData(primarySwatch: Colors.indigo),
+        home: const HomePage(),
+      );
 }

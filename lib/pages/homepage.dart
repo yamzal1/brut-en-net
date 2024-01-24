@@ -67,7 +67,7 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
-          title: const Text('Brut net'),
+          title: const Text('Calcul de salaires bruts et nets'),
           centerTitle: true,
         ),
         body: Flex(direction: Axis.vertical, children: [

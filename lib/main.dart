@@ -6,7 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  static const String title = 'BRUT NET';
+  static const String title = 'Calcul de salaires bruts et nets';
 
   @override
   Widget build(BuildContext context) => MaterialApp(

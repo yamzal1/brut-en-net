@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../components/text_field.dart';
+import '../utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,11 +39,11 @@ class HomePageState extends State<HomePage> {
         double? annuelBrut = double.tryParse(annuelBrutController.text);
 
         double horaireNet =
-            calculNet(horaireBrut!, true, cotisationsStatut.toDouble());
+            conversionBrutNet(horaireBrut!, true, cotisationsStatut.toDouble());
         double mensuelNet =
-            calculNet(mensuelBrut!, true, cotisationsStatut.toDouble());
+            conversionBrutNet(mensuelBrut!, true, cotisationsStatut.toDouble());
         double annuelNet =
-            calculNet(annuelBrut!, true, cotisationsStatut.toDouble());
+            conversionBrutNet(annuelBrut!, true, cotisationsStatut.toDouble());
 
         updateUI(
             null, null, null, horaireNet, mensuelNet, annuelNet, null, null);
@@ -59,7 +58,7 @@ class HomePageState extends State<HomePage> {
         double? mensuelBrut = double.tryParse(mensuelBrutController.text);
         double annuelBrut = mensuelBrut! * moisPrimeConventionnelle;
         double annuelNet =
-            calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+            conversionBrutNet(annuelBrut, true, cotisationsStatut.toDouble());
         updateUI(null, null, annuelBrut, null, null, annuelNet, null, null);
       }
     });
@@ -327,12 +326,12 @@ class HomePageState extends State<HomePage> {
 
                         double mensuelBrut =
                             horaireBrut! * 152 * (tempsTravail / 100);
-                        double mensuelNet = calculNet(
+                        double mensuelNet = conversionBrutNet(
                             mensuelBrut, true, cotisationsStatut.toDouble());
 
                         double annuelBrut =
                             mensuelBrut * moisPrimeConventionnelle;
-                        double annuelNet = calculNet(
+                        double annuelNet = conversionBrutNet(
                             annuelBrut, true, cotisationsStatut.toDouble());
 
                         updateUI(null, mensuelBrut, annuelBrut, null,
@@ -432,29 +431,17 @@ class HomePageState extends State<HomePage> {
     setState(() {
       double? horaireBrut = double.tryParse(horaireBrutController.text);
       double horaireNet =
-          calculNet(horaireBrut!, true, cotisationsStatut.toDouble());
+          conversionBrutNet(horaireBrut!, true, cotisationsStatut.toDouble());
       double mensuelBrut = horaireBrut * 152 * (tempsTravail / 100);
       double mensuelNet =
-          calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(mensuelBrut, true, cotisationsStatut.toDouble());
       double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
       double annuelNet =
-          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(annuelBrut, true, cotisationsStatut.toDouble());
 
       updateUI(null, mensuelBrut, annuelBrut, horaireNet, mensuelNet, annuelNet,
           null, null);
     });
-  }
-
-  double calculNet(double salaire, bool isBrut, double statut) {
-    if (!isBrut) {
-      return roundDouble(salaire / (1 - statut / 100), 2);
-    }
-    return roundDouble(salaire * (1 - statut / 100), 2);
-  }
-
-  double roundDouble(double value, int places) {
-    num mod = pow(10.0, places);
-    return ((value * mod).round().toDouble() / mod);
   }
 
   void updateUI(double? hb, double? mb, double? ab, double? hn, double? mn,
@@ -486,13 +473,13 @@ class HomePageState extends State<HomePage> {
       double horaireBrut = mensuelBrut! / 152 * (tempsTravail / 100);
 
       double horaireNet =
-          calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(horaireBrut, true, cotisationsStatut.toDouble());
       double mensuelNet =
-          calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(mensuelBrut, true, cotisationsStatut.toDouble());
 
       double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
       double annuelNet =
-          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(annuelBrut, true, cotisationsStatut.toDouble());
 
       updateUI(horaireBrut, null, annuelBrut, horaireNet, mensuelNet, annuelNet,
           null, null);
@@ -507,11 +494,11 @@ class HomePageState extends State<HomePage> {
       double horaireBrut = mensuelBrut / 152 * (tempsTravail / 100);
 
       double horaireNet =
-          calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(horaireBrut, true, cotisationsStatut.toDouble());
       double mensuelNet =
-          calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(mensuelBrut, true, cotisationsStatut.toDouble());
       double annuelNet =
-          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(annuelBrut, true, cotisationsStatut.toDouble());
 
       updateUI(horaireBrut, mensuelBrut, null, horaireNet, mensuelNet,
           annuelNet, null, null);
@@ -522,15 +509,15 @@ class HomePageState extends State<HomePage> {
     setState(() {
       double? horaireNet = double.tryParse(horaireNetController.text);
       double horaireBrut =
-          calculNet(horaireNet!, false, cotisationsStatut.toDouble());
+          conversionBrutNet(horaireNet!, false, cotisationsStatut.toDouble());
 
       double mensuelBrut = horaireBrut * 152 * (tempsTravail / 100);
       double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
 
       double mensuelNet =
-          calculNet(mensuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(mensuelBrut, true, cotisationsStatut.toDouble());
       double annuelNet =
-          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(annuelBrut, true, cotisationsStatut.toDouble());
 
       updateUI(horaireBrut, mensuelBrut, annuelBrut, null, mensuelNet,
           annuelNet, null, null);
@@ -541,15 +528,15 @@ class HomePageState extends State<HomePage> {
     setState(() {
       double? mensuelNet = double.tryParse(mensuelNetController.text);
       double mensuelBrut =
-          calculNet(mensuelNet!, false, cotisationsStatut.toDouble());
+          conversionBrutNet(mensuelNet!, false, cotisationsStatut.toDouble());
 
       double horaireBrut = mensuelBrut / 152 * (tempsTravail / 100);
       double annuelBrut = mensuelBrut * moisPrimeConventionnelle;
 
       double horaireNet =
-          calculNet(horaireBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(horaireBrut, true, cotisationsStatut.toDouble());
       double annuelNet =
-          calculNet(annuelBrut, true, cotisationsStatut.toDouble());
+          conversionBrutNet(annuelBrut, true, cotisationsStatut.toDouble());
 
       updateUI(horaireBrut, mensuelBrut, annuelBrut, horaireNet, null,
           annuelNet, null, null);
@@ -564,11 +551,11 @@ class HomePageState extends State<HomePage> {
       double horaireNet = mensuelNet / 152 * (tempsTravail / 100);
 
       double horaireBrut =
-          calculNet(horaireNet, false, cotisationsStatut.toDouble());
+          conversionBrutNet(horaireNet, false, cotisationsStatut.toDouble());
       double mensuelBrut =
-          calculNet(mensuelNet, false, cotisationsStatut.toDouble());
+          conversionBrutNet(mensuelNet, false, cotisationsStatut.toDouble());
       double annuelBrut =
-          calculNet(annuelNet, false, cotisationsStatut.toDouble());
+          conversionBrutNet(annuelNet, false, cotisationsStatut.toDouble());
 
       updateUI(horaireBrut, mensuelBrut, annuelBrut, horaireNet, mensuelNet,
           null, null, null);
